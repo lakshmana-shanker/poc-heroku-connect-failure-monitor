@@ -63,11 +63,13 @@ SELECT 'BSNA'as Source_org,id, txid, created_at, updated_at, processed_at, proce
        state, action, table_name, record_id, sfid, old, values,
        sf_result, sf_message
 FROM bsna._trigger_log
+WHERE state = 'FAILED'
 UNION ALL
 SELECT 'APAC'as Source_org,id, txid, created_at, updated_at, processed_at, processed_tx,
        state, action, table_name, record_id, sfid, old, values,
        sf_result, sf_message
 FROM apac._trigger_log
+WHERE state = 'FAILED'
 ON CONFLICT (trigger_log_id) DO NOTHING;
 `;
 
@@ -92,6 +94,7 @@ WHERE trigger_log_id = ANY($1);
 function buildHtmlEmail(rows) {
   const tableRows = rows.map(r => `
     <tr>
+      <td>${r.Source}</td>
       <td>${r.trigger_log_id}</td>
       <td>${r.txid || 'N/A'}</td>
       <td>${r.table_name}</td>
