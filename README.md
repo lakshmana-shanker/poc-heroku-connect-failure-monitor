@@ -77,7 +77,7 @@ Flow:
       state = FAILED
 
 7. Scheduler / Worker (runs every X minutes):
-      → Checks salesforce._trigger_log for FAILED records.
+      → Checks e3._trigger_log,bsna._trigger_log,apac._trigger_log for FAILED records.
 
 8. Inserts new FAILED records into:
       custom.failed_records
