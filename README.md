@@ -1,5 +1,8 @@
 # poc-heroku-connect-failure-monitor
 
+## Flow
+
+```text
 salesforce._trigger_log
         │
         │ SELECT state='FAILED'
@@ -54,7 +57,7 @@ Application / SQL       Heroku Postgres DB      Heroku Connect                  
         |                        |                    |                                    |                                        |                  | 
         |                        |                    |                                    |                                        |                  | 
    
-
+```
 
 
 Components:
