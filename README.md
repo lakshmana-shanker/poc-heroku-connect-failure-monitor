@@ -3,7 +3,7 @@
 ## Flow
 
 ```text
-salesforce._trigger_log
+e3._trigger_log,bsna._trigger_log,apac._trigger_log
         │
         │ SELECT state='FAILED'
         ▼
