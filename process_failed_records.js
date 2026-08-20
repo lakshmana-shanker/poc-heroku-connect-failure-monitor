@@ -51,13 +51,23 @@ const FROM_EMAIL = `Mailgun Sandbox <postmaster@${MAILGUN_DOMAIN}>`;
 
 const INSERT_FAILED_SQL = `
 INSERT INTO custom.failed_records
-(trigger_log_id, txid, created_at, updated_at, processed_at, processed_tx,
+(Source,trigger_log_id, txid, created_at, updated_at, processed_at, processed_tx,
  state, action, table_name, record_id, sfid, old, values, sf_result, sf_message)
-SELECT id, txid, created_at, updated_at, processed_at, processed_tx,
+SELECT 'E3'as Source_org,id, txid, created_at, updated_at, processed_at, processed_tx,
        state, action, table_name, record_id, sfid, old, values,
        sf_result, sf_message
-FROM salesforce._trigger_log
+FROM e3._trigger_log
 WHERE state = 'FAILED'
+UNION ALL
+SELECT 'BSNA'as Source_org,id, txid, created_at, updated_at, processed_at, processed_tx,
+       state, action, table_name, record_id, sfid, old, values,
+       sf_result, sf_message
+FROM bsna._trigger_log
+UNION ALL
+SELECT 'APAC'as Source_org,id, txid, created_at, updated_at, processed_at, processed_tx,
+       state, action, table_name, record_id, sfid, old, values,
+       sf_result, sf_message
+FROM apac._trigger_log
 ON CONFLICT (trigger_log_id) DO NOTHING;
 `;
 
