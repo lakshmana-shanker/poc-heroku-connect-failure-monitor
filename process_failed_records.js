@@ -1,7 +1,9 @@
 import pkg from 'pg';
 import Mailgun from 'mailgun.js';
 import formData from 'form-data';
-
+const environment = process.argv[2];
+if (!environment) {
+throw new Error ('Environment parameter is required: UAT or PROD')}
 const { Pool } = pkg;
 
 /* ===========================
