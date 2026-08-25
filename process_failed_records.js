@@ -204,7 +204,7 @@ async function run() {
     try {
       await mg.messages.create(MAILGUN_DOMAIN, {
         from: FROM_EMAIL,
-        to: [ALERT_EMAIL_TO],
+        to: ALERT_EMAIL_TO.split(','),
         subject: `Heroku Connect Sync Failures – ${rows.length} record(s)`,
         text: `Heroku Connect sync failures detected: ${rows.length} record(s).`,
         html: htmlBody
