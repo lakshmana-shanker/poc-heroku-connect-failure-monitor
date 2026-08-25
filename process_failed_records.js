@@ -12,14 +12,26 @@ const { Pool } = pkg;
 
 const MAX_EMAIL_RECORDS = 50; // safety limit
 
-const {
-  DATABASE_URL,
-  MAILGUN_API_KEY,
-  MAILGUN_DOMAIN,
-  ALERT_EMAIL_TO,
-  NODE_ENV = 'production'
-} = process.env;
-
+const {MAILGUN_API_KEY} = process.env;
+let DATABASE_URL;
+let MAILGUN_DOMAIN;
+let ALERT_EMAIL_TO;
+let NODE_ENV;
+if (environment ==='UAT'){
+DATABASE_URL= process.env.UAT_DATABASE_URL;
+MAILGUN_DOMAIN = process.env.UAT_MAILGUN_DOMAIN; 
+ALERT_EMAIL_TO = process.env.UAT_ALERT_EMAIL_TO;
+NODE_ENV = 'UAT'; 
+}
+else if (environment ==='PROD') {
+DATABASE_URL= process.env.PROD_DATABASE_URL;
+MAILGUN_DOMAIN = process.env.PROD_MAILGUN_DOMAIN; 
+ALERT_EMAIL_TO = process.env.PROD_ALERT_EMAIL_TO;
+NODE_ENV = 'PROD';  
+}   
+else {
+throw new Error ('Invalid Environment: Use UAT or PROD');
+}
 if (!DATABASE_URL || !MAILGUN_API_KEY || !MAILGUN_DOMAIN || !ALERT_EMAIL_TO) {
   console.error(' Missing required environment variables');
 }
