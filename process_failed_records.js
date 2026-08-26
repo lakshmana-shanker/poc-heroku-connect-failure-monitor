@@ -65,7 +65,7 @@ const FROM_EMAIL = `Heroku Monitoring <alerts@${MAILGUN_DOMAIN}>`;
 
 const INSERT_FAILED_SQL = `
 INSERT INTO custom.failed_records
-(Source,trigger_log_id, txid, created_at, updated_at, processed_at, processed_tx,
+("Source",trigger_log_id, txid, created_at, updated_at, processed_at, processed_tx,
  state, action, table_name, record_id, sfid, old, values, sf_result, sf_message)
 SELECT 'E3'as Source_org,id, txid, created_at, updated_at, processed_at, processed_tx,
        state, action, table_name, record_id, sfid, old, values,
