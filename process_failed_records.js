@@ -57,7 +57,7 @@ const mg = mailgun.client({
   key: MAILGUN_API_KEY
 });
 
-const FROM_EMAIL = `Mailgun Sandbox <postmaster@${MAILGUN_DOMAIN}>`;
+const FROM_EMAIL = `Heroku Monitoring <alerts@${MAILGUN_DOMAIN}>`;
 
 /* ===========================
    SQL
@@ -205,8 +205,8 @@ async function run() {
       await mg.messages.create(MAILGUN_DOMAIN, {
         from: FROM_EMAIL,
         to: ALERT_EMAIL_TO.split(','),
-        subject: `Heroku Connect Sync Failures – ${rows.length} record(s)`,
-        text: `Heroku Connect sync failures detected: ${rows.length} record(s).`,
+        subject: `[${NODE_ENV}] Heroku Connect Sync Failures – ${rows.length} record(s)`,
+        text: `Heroku Connect Monitoring has identified: ${rows.length} failed synchronization record(s). Please review and take necessary action`,
         html: htmlBody
       });
 
