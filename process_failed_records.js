@@ -131,7 +131,11 @@ function buildHtmlEmail(rows) {
     <h2 style="color:#d32f2f;">
       Heroku Connect – FAILED Sync Alert
     </h2>
-
+    <p style="font-family: Arial, font-size: 14px; sans-serif; color:black;">
+     The Heroku Connect Monitoring process has detected <strong>${rows.length}</strong> failed synchronization record(s).
+    <p>
+    <p style="font-family: Arial,font-size: 14px; sans-serif; color:black;">
+     Please review the failed records listed below and take the necessary action.
     <p>
       <strong>Environment:</strong> ${NODE_ENV}<br/>
       <strong>Total Failed Records:</strong> ${rows.length}
@@ -141,6 +145,7 @@ function buildHtmlEmail(rows) {
       style="border-collapse:collapse; width:100%; font-size:12px;">
       <thead style="background:#f5f5f5;">
         <tr>
+          <th>Source</th>
           <th>Trigger Log ID</th>
           <th>TXID</th>
           <th>Table</th>
