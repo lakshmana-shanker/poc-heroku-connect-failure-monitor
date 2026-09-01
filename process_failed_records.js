@@ -84,7 +84,7 @@ SELECT 'APAC'as Source_org,id, txid, created_at, updated_at, processed_at, proce
        sf_result, sf_message
 FROM apac._trigger_log
 WHERE state = 'FAILED'
-ON CONFLICT (trigger_log_id) DO NOTHING;
+ON CONFLICT (trigger_log_id,updated_at) DO NOTHING;
 `;
 
 const FETCH_UNNOTIFIED_SQL = `
@@ -98,7 +98,7 @@ LIMIT $1;
 const MARK_NOTIFIED_SQL = `
 UPDATE custom.failed_records
 SET notified = true
-WHERE trigger_log_id = ANY($1);
+WHERE id = ANY($1);
 `;
 
 /* ===========================
@@ -109,11 +109,8 @@ function buildHtmlEmail(rows) {
   const tableRows = rows.map(r => `
     <tr>
       <td>${r.Source}</td>
-      <td>${r.trigger_log_id}</td>
-      <td>${r.txid || 'N/A'}</td>
-      <td>${r.table_name}</td>
       <td>${r.action}</td>
-      <td>${r.record_id}</td>
+      <td>${r.table_name}</td>
       <td>${r.sfid || 'N/A'}</td>
       <td>${r.sf_result || 'N/A'}</td>
       <td style="max-width:300px; word-wrap:break-word;">
@@ -122,7 +119,11 @@ function buildHtmlEmail(rows) {
       <td style="max-width:300px; word-wrap:break-word; font-size:11px;">
         ${r.values || 'N/A'}
       </td>
+      <td>${r.trigger_log_id}</td>
+      <td>${r.txid || 'N/A'}</td>
+      <td>${r.record_id}</td>
       <td>${new Date(r.created_at).toLocaleString()}</td>
+      <td>${new Date(r.updated_at).toLocaleString()}</td>
     </tr>
   `).join('');
 
@@ -145,17 +146,18 @@ function buildHtmlEmail(rows) {
       style="border-collapse:collapse; width:100%; font-size:12px;">
       <thead style="background:#f5f5f5;">
         <tr>
-          <th>Source</th>
-          <th>Trigger Log ID</th>
-          <th>TXID</th>
-          <th>Table</th>
+          <th>Org</th>
           <th>Action</th>
-          <th>Record ID</th>
+          <th>Object</th>
           <th>SFID</th>
           <th>Error Code</th>
           <th>Error Message</th>
           <th>Values</th>
+          <th>Trigger Log ID</th>
+          <th>TXID</th>         
+          <th>Record ID</th>
           <th>Created At</th>
+          <th>Updated At</th>
         </tr>
       </thead>
       <tbody>
@@ -202,7 +204,7 @@ async function run() {
           `\x1b[1m\x1b[31m${rows.length} FAILED record(s) detected in table custom.failed_records\x1b[0m`
         );
     const htmlBody = buildHtmlEmail(rows);
-    const triggerIds = rows.map(r => r.trigger_log_id);
+    const Ids = rows.map(r => r.id);
 
     console.log('Sending Mailgun notification...');
 
