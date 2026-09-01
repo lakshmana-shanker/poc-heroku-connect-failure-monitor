@@ -206,8 +206,12 @@ async function run() {
     const htmlBody = buildHtmlEmail(rows);
     const Ids = rows.map(r => r.id);
 
-    console.log('Sending Mailgun notification...');
-
+    console.log('Sending Mailgun notification...'); ALERT_EMAIL_TO
+    console.log('MAILGUN_DOMAIN:',MAILGUN_DOMAIN);
+    console.log('FROM_EMAIL',FROM_EMAIL);
+    console.log('ALERT_EMAIL_TO',ALERT_EMAIL_TO);
+    console.log('Recipients Array',ALERT_EMAIL_TO.split(','));
+     
     try {
       await mg.messages.create(MAILGUN_DOMAIN, {
         from: FROM_EMAIL,
