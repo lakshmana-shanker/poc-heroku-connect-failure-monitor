@@ -224,7 +224,7 @@ async function run() {
       console.log(
         '\x1b[1m\x1b[32mMarking records as notified...\x1b[0m'
       );
-      await client.query(MARK_NOTIFIED_SQL, [triggerIds]);
+      await client.query(MARK_NOTIFIED_SQL, [Ids]);
     } catch (mailError) {
       // Mail issues must NEVER crash the dyno
       console.error('⚠ Mailgun error (non-fatal)');
